@@ -1,6 +1,15 @@
 import React from "react";
-import { Map, CircleMarker, TileLayer, Tooltip } from "react-leaflet";
+import { Map, Marker, TileLayer, Popup } from "react-leaflet";
 import cityData from "./CityData";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
 
 export default class Maps extends React.Component {
   constructor(props) {
@@ -14,28 +23,20 @@ export default class Maps extends React.Component {
           style={{ width: "100%", height: "450px" }}
           zoom={1}
           center={[-0.09, 51.505]}
+          attribution={false}
         >
           <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
           {cityData.city.map((city, k) => {
             return (
-              <CircleMarker
+              <Marker
                 key={k}
-                center={[city["coordinates"][1], city["coordinates"][0]]}
-                radius={20 * Math.log(city["population"] / 10000000)}
-                fillOpacity={0.5}
-                stroke={false}
+                position={[city["coordinates"][1], city["coordinates"][0]]}
               >
-                <Tooltip direction="right" offset={[-8, -2]} opacity={1}>
-                  <span>
-                    {city["name"] +
-                      ": " +
-                      "Population" +
-                      " " +
-                      city["population"]}
-                  </span>
-                </Tooltip>
-              </CircleMarker>
+                <Popup>
+                  <span>{city["name"]}</span>
+                </Popup>
+              </Marker>
             );
           })}
         </Map>
