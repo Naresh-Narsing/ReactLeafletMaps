@@ -18,28 +18,31 @@ export default class Maps extends React.Component {
 
   render() {
     return (
-      <div>
-        <Map
-          style={{ width: "100%", height: "450px" }}
-          zoom={1}
-          center={[-0.09, 51.505]}
-          attribution={false}
-        >
-          <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <div className="container">
+        <h3 className="m-4">Map with Marker using React Leaflet</h3>
+        <div className="row">
+          <Map
+            style={{ width: "100%", height: "450px" }}
+            zoom={2.5}
+            center={[-0.09, 51.505]}
+            attributionControl={false}
+          >
+            <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-          {cityData.city.map((city, k) => {
-            return (
-              <Marker
-                key={k}
-                position={[city["coordinates"][1], city["coordinates"][0]]}
-              >
-                <Popup>
-                  <span>{city["name"]}</span>
-                </Popup>
-              </Marker>
-            );
-          })}
-        </Map>
+            {cityData.city.map((city, k) => {
+              return (
+                <Marker
+                  key={k}
+                  position={[city["coordinates"][1], city["coordinates"][0]]}
+                >
+                  <Popup>
+                    <span>{city["name"]}</span>
+                  </Popup>
+                </Marker>
+              );
+            })}
+          </Map>
+        </div>
       </div>
     );
   }
